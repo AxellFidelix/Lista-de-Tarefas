@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <title>Gerenciador de Tarefas</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+
+        <!-- Bootstrap CSS v5.2.1 -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+        />
+    </head>
+
+    <body>
+        <main>
+            <div class="container mt-5">
+                <h1 class="text-center">Gerenciador de Tarefas Domésticas</h1>
+                
+                <div class="card mt-4">
+                  <div class="card-header">
+                    Adicionar Tarefa
+                  </div>
+                  <div class="card-body">
+                    <form id="formTarefa">
+                      <div class="form-group">
+                        <label for="nomeTarefa">Nome da Tarefa</label>
+                        <input type="text" class="form-control" id="nomeTarefa" required>
+                      </div>
+                      <div class="form-group">
+                        <label for="descricaoTarefa">Descrição</label>
+                        <input type="text" class="form-control" id="descricaoTarefa" required>
+                      </div>
+                      <button type="submit" class="btn btn-primary">Adicionar Tarefa</button>
+                    </form>
+                  </div>
+                </div>
+            
+                <div class="card mt-4">
+                  <div class="card-header">
+                    Lista de Tarefas
+                  </div>
+                  <div class="card-body">
+                    <ul class="list-group" id="listaTarefas">
+                    </ul>
+                  </div>
+                </div>
+              </div>
+        </main>
+        <script>
+            let tarefas = [];
+        
+            document.getElementById('formTarefa').addEventListener('submit', function(event) {
+              event.preventDefault();
+        
+              const nomeTarefa = document.getElementById('nomeTarefa').value;
+              const descricaoTarefa = document.getElementById('descricaoTarefa').value;
+        
+              const novaTarefa = {
+                nome: nomeTarefa,
+                descricao: descricaoTarefa
+              };
+        
+              tarefas.push(novaTarefa);
+              renderizarTarefas();
+        
+              document.getElementById('formTarefa').reset();
+            });
+        
+            function renderizarTarefas() {
+              const listaTarefas = document.getElementById('listaTarefas');
+              listaTarefas.innerHTML = '';
+        
+              tarefas.forEach((tarefa, indice) => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                li.innerHTML = `
+                  <div>
+                    <h5>${tarefa.nome}</h5>
+                    <p>${tarefa.descricao}</p>
+                  </div>
+                  <div>
+                    <button class="btn btn-warning btn-sm mr-2" onclick="editarTarefa(${indice})">Editar</button>
+                    <button class="btn btn-danger btn-sm" onclick="removerTarefa(${indice})">Remover</button>
+                  </div>
+                `;
+                listaTarefas.appendChild(li);
+              });
+            }
+        
+            function removerTarefa(indice) {
+              tarefas.splice(indice, 1);
+              renderizarTarefas();
+            }
+        
+            function editarTarefa(indice) {
+              const tarefa = tarefas[indice];
+              document.getElementById('nomeTarefa').value = tarefa.nome;
+              document.getElementById('descricaoTarefa').value = tarefa.descricao;
+              removerTarefa(indice);
+            }
+          </script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"
+        ></script>
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+            crossorigin="anonymous"
+        ></script>
+    </body>
+</html>
